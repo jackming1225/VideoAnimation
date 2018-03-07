@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
     private RelativeLayout rlWork;
     private boolean isCircleView = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +60,8 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
         exoPlayerView2 = findViewById(R.id.exo_player_view2);
         rlWork = findViewById(R.id.rlDialog);
         try {
+
+
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
             TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
             exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity /*implements View.OnClickLis
             public void run() {
                 while (true) {
                     long current = exoPlayer.getCurrentPosition();
-                    Logger.logInfo("modulo", String.valueOf((int) current % 5));
+                    Logger.logInfo("modulo", String.valueOf((int) current % 5 ));
 
                     if ((int) current % 5 == 0) {
                         if (isCircleView) {
