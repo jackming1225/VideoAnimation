@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.widget.MediaController;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.util.Timer;
@@ -28,7 +27,6 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
                 }
             };
     private VideoView vvRandomView;
-    private TextView tvStatus;
     private boolean isSmall = false;
     private int height;
     private int width;
@@ -43,6 +41,8 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
         initView();
         play();
     }
+
+
 
     private void startTimer() {
         handler = new Handler();
@@ -64,14 +64,12 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
                         if (isCompleted) {
                             timer.cancel();
                             isCompleted = false;
+                        }
+                        if (isSmall) {
+                            changeVideoSize(1000, 1000);
+                            isSmall = false;
                         } else {
-                            if (isSmall) {
-                                changeVideoSize(1000, 1000);
-                                isSmall = false;
-                            } else {
-                                changeVideoSize(500, 500);
-                                isSmall = true;
-                            }
+                            changeVideoSize(500, 500);
                         }
                     }
                 });
@@ -115,8 +113,6 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
 
     private void initView() {
         vvRandomView = findViewById(R.id.vvRandomView);
-
-        tvStatus = findViewById(R.id.tvStatus);
 
         DisplayMetrics dm;
         dm = new DisplayMetrics();
