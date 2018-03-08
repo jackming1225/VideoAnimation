@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import java.util.Timer;
@@ -26,8 +25,6 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
                 @Override
                 public void onCompletion(MediaPlayer arg0) {
                     isCompleted = true;
-                    Toast.makeText(VideoViewAnimationActivity.this, "End of Video",
-                            Toast.LENGTH_LONG).show();
                 }
             };
     private VideoView vvRandomView;
@@ -37,6 +34,7 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
     private int width;
     private TimerTask timerTask;
     private Handler handler;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +45,6 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
     }
 
     private void startTimer() {
-        Timer timer;
         handler = new Handler();
 
         timer = new Timer();
@@ -64,12 +61,17 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     public void run() {
                         //code to run after every 5 seconds
-                        if (isSmall) {
-                            changeVideoSize(1000, 1000);
-                            isSmall = false;
+                        if (isCompleted) {
+                            timer.cancel();
+                            isCompleted = false;
                         } else {
-                            changeVideoSize(500, 500);
-                            isSmall = true;
+                            if (isSmall) {
+                                changeVideoSize(1000, 1000);
+                                isSmall = false;
+                            } else {
+                                changeVideoSize(500, 500);
+                                isSmall = true;
+                            }
                         }
                     }
                 });
@@ -91,20 +93,20 @@ public class VideoViewAnimationActivity extends AppCompatActivity {
     }
 
     private void play() {
-
+/*
         String viewSource = "android.resource://" + getPackageName() + "/" + R.raw.videoplayback;
         mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(this, Uri.parse(viewSource));
+        mediaMetadataRetriever.setDataSource(this, Uri.parse(viewSource));*/
 
-
-        vvRandomView.setVideoURI(Uri.parse(viewSource));
-        myMediaController = new MediaController(this);
-        vvRandomView.setMediaController(myMediaController);
+        Uri videoURI = Uri.parse("http://blueappsoftware.in/layout_design_android_blog.mp4");
+        vvRandomView.setVideoURI(videoURI);
+//        myMediaController = new MediaController(this);
+//        vvRandomView.setMediaController(myMediaController);
 
         /*vvRandomView.setOnCompletionListener(myVideoViewCompletionListener);
         vvRandomView.setOnPreparedListener(MyVideoViewPreparedListener);
         vvRandomView.setOnErrorListener(myVideoViewErrorListener);*/
-
+        vvRandomView.setOnCompletionListener(myVideoViewCompletionListener);
         vvRandomView.requestFocus();
         vvRandomView.start();
         startTimer();
